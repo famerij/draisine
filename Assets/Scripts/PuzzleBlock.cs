@@ -16,7 +16,7 @@ public class PuzzleBlock : MonoBehaviour
 
 	private int _currentSpriteIndex;
 	
-	private void Start()
+	public void Start()
 	{
 		_currentSpriteIndex = Random.Range(0, SymbolSprites.Count);
 		UpdateSprite();
