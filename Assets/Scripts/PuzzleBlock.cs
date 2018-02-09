@@ -6,7 +6,8 @@ public enum Direction { Left, Right }
 
 public class PuzzleBlock : MonoBehaviour
 {
-	public SpriteRenderer Renderer;
+	public SpriteRenderer SymbolRenderer;
+	public List<GameObject> ActivatedSprites;
 	public List<Sprite> SymbolSprites;
 
 	public Sprite CurrentSprite
@@ -24,7 +25,7 @@ public class PuzzleBlock : MonoBehaviour
 
 	private void UpdateSprite()
 	{
-		Renderer.sprite = SymbolSprites[_currentSpriteIndex];
+		SymbolRenderer.sprite = SymbolSprites[_currentSpriteIndex];
 	}
 	
 	public void ChangeSprite(Direction direction)
