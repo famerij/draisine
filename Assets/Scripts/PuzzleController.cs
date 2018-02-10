@@ -11,16 +11,23 @@ public class PuzzleController : MonoBehaviour
 {
 	public Collider2D Base;
 	public float SpreadHeight = .5f;
+	public float SwapDuration = .2f;
+	public float SpreadDuration = .2f;
 	public List<PuzzleBlock> Blocks = new List<PuzzleBlock>();
 
 	private Transform _activeTransform;
 	private PuzzleBlock _activeBlock;
 	private PuzzleBlock _selectedBlock;
 	private bool _selection;
+	private bool _swapping;
 	
 	private void Start()
 	{
-		Blocks.ForEach(b => b.ActivatedSprites.ForEach(a => a.SetActive(false)));
+		Blocks.ForEach(b =>
+		{
+			b.ActivatedSprites.ForEach(a => a.SetActive(false));
+			b.transform.SetParent(transform, true);
+		});
 		
 		ActivateTransform(Blocks[0].transform);
 	}
@@ -29,14 +36,7 @@ public class PuzzleController : MonoBehaviour
 	{
 		if (_selection && _activeBlock != null)
 		{
-			Vector3 currentPos = _activeTransform.position;
-			_activeTransform.position = _transform.position;
-			_transform.position = currentPos;
-			
-			// Rearrange list
-			Blocks.Sort((b1, b2) => b1.transform.position.y.CompareTo(b2.transform.position.y));
-			
-			SpreadBlocks();
+			StartCoroutine(SwitchBlocks(_transform));
 			
 			return;
 		}
@@ -55,18 +55,38 @@ public class PuzzleController : MonoBehaviour
 			_activeBlock.ActivatedSprites.ForEach(s => s.SetActive(true));
 	}
 
+	private IEnumerator SwitchBlocks(Transform _other)
+	{
+		Vector3 currentPos = _activeTransform.position;
+//			_activeTransform.position = _transform.position;
+//			_transform.position = currentPos;
+		_activeTransform.MoveTo(_activeTransform.position, _other.position, SwapDuration, EasingTypes.BackOut);
+		_other.MoveTo(_other.position, currentPos, SwapDuration, EasingTypes.BackOut);
+		_swapping = true;
+		
+		yield return new WaitForSeconds(SwapDuration);
+		
+		// Rearrange list
+		Blocks.Sort((b1, b2) => b1.transform.position.y.CompareTo(b2.transform.position.y));
+		
+		SpreadBlocks();
+	}
+
 	private void SpreadBlocks()
 	{
 		float yPos = Base.transform.position.y + Base.bounds.extents.y;
 		for (int i = 0; i < Blocks.Count; i++)
 		{
+			Blocks[i].transform.SetSiblingIndex(i);
 			Blocks[i].GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
 			var blockBounds = Blocks[i].GetComponent<Collider2D>().bounds;
 			float y = SpreadHeight + yPos + blockBounds.extents.y;
-			Blocks[i].transform.MoveTo(Blocks[i].transform.position, new Vector3(Blocks[i].transform.position.x, y), .3f,
-				EasingTypes.BackOut);
+			Blocks[i].transform.MoveTo(Blocks[i].transform.position, new Vector3(Blocks[i].transform.position.x, y),
+				SpreadDuration,EasingTypes.BackOut);
 			yPos = y + blockBounds.extents.y;
 		}
+
+		_swapping = false;
 	}
 
 	private void Update()
@@ -83,7 +103,7 @@ public class PuzzleController : MonoBehaviour
 			_selection = false;
 		}
 		
-		if (Input.GetKeyDown(KeyCode.DownArrow))
+		if (Input.GetKeyDown(KeyCode.DownArrow) && !_swapping)
 		{
 			if (_activeBlock != null && Blocks.IndexOf(_activeBlock) > 0)
 			{
@@ -91,7 +111,7 @@ public class PuzzleController : MonoBehaviour
 				ActivateTransform(Blocks[Blocks.IndexOf(_activeBlock) - 1].transform);
 			}
 		}
-		else if (Input.GetKeyDown(KeyCode.UpArrow))
+		else if (Input.GetKeyDown(KeyCode.UpArrow) && !_swapping)
 		{
 			if (_activeBlock != null && Blocks.IndexOf(_activeBlock) < Blocks.Count - 1)
 			{
