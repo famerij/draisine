@@ -36,6 +36,7 @@ GameObject:
   - component: {fileID: 4987927321330128}
   - component: {fileID: 95951565309957726}
   - component: {fileID: 82238036636686014}
+  - component: {fileID: 114420758710701704}
   m_Layer: 0
   m_Name: Draisine
   m_TagString: Untagged
@@ -908,6 +909,18 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114420758710701704
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1046525628459964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bde0b1852ec1448c79ca13d68b3d6fb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EngineAudioSource: {fileID: 82238036636686014}
 --- !u!212 &212013090603612466
 SpriteRenderer:
   m_ObjectHideFlags: 1

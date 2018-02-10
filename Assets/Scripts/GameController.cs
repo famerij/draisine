@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -17,6 +18,8 @@ public class GameController : MonoBehaviour
 	public PuzzleController PuzzleController;
 	public Parallax ParallaxBackground;
 	public List<Transform> Wheels;
+	public Draisine Draisine;
+	public Gate Gate;
 	
 	private float _startMovementSpeed;
 	private bool _stopped;
@@ -25,6 +28,8 @@ public class GameController : MonoBehaviour
 	{
 		TravelDistance = 0f;
 		_startMovementSpeed = MovementSpeed;
+		
+		StartDraisine();
 	}
 
 	private void Update()
@@ -39,26 +44,39 @@ public class GameController : MonoBehaviour
 			MovementSpeed += Time.deltaTime / MovementSpeedIncreaseDivider;
 	}
 
+	private bool _gateShown = false;
+	
 	[ContextMenu("Stop")]
-	private void StopDraisine()
+	public void StopDraisine()
 	{
-		LerpFloat(MovementSpeed, 0f, DecelerationDuration, (value) => MovementSpeed = value);
+		LerpFloat(MovementSpeed, 2f, DecelerationDuration, (value) =>
+		{
+			MovementSpeed = value;
+		}, () =>
+		{
+			MovementSpeed = 2f;
+			Gate.Appear();
+			LerpFloat(MovementSpeed, 0f, 2f, (value) => MovementSpeed = value, () => { MovementSpeed = 0f; });
+		});
+		
+		Draisine.StopMovement();
 		_stopped = true;
 	}
-	
+
 	[ContextMenu("Start")]
-	private void StartDraisine()
+	public void StartDraisine()
 	{
-		LerpFloat(0f, _startMovementSpeed, AccelerationDuration, (value) => MovementSpeed = value);
+		LerpFloat(0f, _startMovementSpeed, AccelerationDuration, (value) => MovementSpeed = value, null);
 		_stopped = false;
+		Draisine.StartMovement();
 	}
 
-	private void LerpFloat(float from, float to, float duration, Action<float> progress)
+	private void LerpFloat(float from, float to, float duration, Action<float> progress, Action onDone)
 	{
-		StartCoroutine(LerpRoutine(from, to, duration, progress));
+		StartCoroutine(LerpRoutine(from, to, duration, progress, onDone));
 	}
 	
-	private IEnumerator LerpRoutine(float from, float to, float duration, Action<float> progress)
+	private IEnumerator LerpRoutine(float from, float to, float duration, Action<float> progress, Action onDone)
 	{
 		float t = 0f;
 
@@ -69,6 +87,6 @@ public class GameController : MonoBehaviour
 			yield return new WaitForEndOfFrame();
 		}
 		
-		progress.Invoke(to);
+		if (onDone != null) onDone.Invoke();
 	}
 }

@@ -55,10 +55,12 @@ MonoBehaviour:
   MovementSpeedIncreaseDivider: 100
   WheelSpeedMultiplier: 18
   AccelerationDuration: 3
-  DecelerationDuration: 3
+  DecelerationDuration: 2
   TravelDistance: 0
   PuzzleController: {fileID: 0}
   ParallaxBackground: {fileID: 0}
   Wheels:
   - {fileID: 0}
   - {fileID: 0}
+  Draisine: {fileID: 0}
+  Gate: {fileID: 0}
