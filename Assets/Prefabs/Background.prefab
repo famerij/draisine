@@ -475,6 +475,8 @@ MonoBehaviour:
   YMax: 0
   SpacingMin: 0
   SpacingMax: 0
+  MaxGraphicInstances: 3
+  DestroyGraphicsDistance: 40
 --- !u!114 &114363596839075866
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -491,6 +493,8 @@ MonoBehaviour:
   YMax: 0
   SpacingMin: 0
   SpacingMax: 0
+  MaxGraphicInstances: 3
+  DestroyGraphicsDistance: 40
 --- !u!114 &114386017343664916
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -507,6 +511,8 @@ MonoBehaviour:
   YMax: 0.5
   SpacingMin: 0
   SpacingMax: 0
+  MaxGraphicInstances: 30
+  DestroyGraphicsDistance: 20
 --- !u!114 &114455753330718166
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -523,6 +529,8 @@ MonoBehaviour:
   YMax: 3
   SpacingMin: 1
   SpacingMax: 3
+  MaxGraphicInstances: 10
+  DestroyGraphicsDistance: 20
 --- !u!114 &114746876109611748
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -559,6 +567,8 @@ MonoBehaviour:
   YMax: 0
   SpacingMin: 0
   SpacingMax: 0
+  MaxGraphicInstances: 100
+  DestroyGraphicsDistance: 20
 --- !u!212 &212013334741710152
 SpriteRenderer:
   m_ObjectHideFlags: 1

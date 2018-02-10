@@ -11,6 +11,8 @@ public class GraphicsRepeater : MonoBehaviour
 	public float YMax;
 	public float SpacingMin;
 	public float SpacingMax;
+	public int MaxGraphicInstances = 50;
+	public float DestroyGraphicsDistance = 50f;
 
 	private readonly List<SpriteRenderer> _graphics = new List<SpriteRenderer>();
 	private Vector3 _originalPosition;
@@ -24,7 +26,7 @@ public class GraphicsRepeater : MonoBehaviour
 		_graphics.Add(newGraphics.GetComponent<SpriteRenderer>());
 		Graphics.gameObject.SetActive(false);
 
-		for (int i = 0; i < 50; i++)
+		for (int i = 0; i < MaxGraphicInstances; i++)
 		{
 			AddGraphic();
 		}
@@ -32,12 +34,12 @@ public class GraphicsRepeater : MonoBehaviour
 	
 	void Update()
 	{
-		if (_graphics.Last() != null && _graphics.Last().transform.position.x < 100f)
+		if (_graphics.Last() != null && _graphics.Last().transform.position.x < DestroyGraphicsDistance)
 		{
 			AddGraphic();
 		}
 		
-		if (_graphics[0].transform.position.x < -100f)
+		if (_graphics[0].transform.position.x < -DestroyGraphicsDistance)
 		{
 			Destroy(_graphics[0].gameObject);
 			_graphics.RemoveAt(0);
