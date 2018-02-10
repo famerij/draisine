@@ -294,6 +294,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 1786612552084936, guid: 3a42ba68208ee42bc9a2023754107470, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3a42ba68208ee42bc9a2023754107470, type: 2}
   m_IsPrefabParent: 0
@@ -335,6 +339,10 @@ Prefab:
     - target: {fileID: 4944651627737788, guid: 5987f69b3ba8643c88f45dbe92ac21d2, type: 2}
       propertyPath: m_RootOrder
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1302966012095202, guid: 5987f69b3ba8643c88f45dbe92ac21d2, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5987f69b3ba8643c88f45dbe92ac21d2, type: 2}
@@ -396,6 +404,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 1679420173456638, guid: c6539d17c69594a0891fae2c81e5cdf7, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c6539d17c69594a0891fae2c81e5cdf7, type: 2}
   m_IsPrefabParent: 0
@@ -437,6 +449,10 @@ Prefab:
     - target: {fileID: 4270033928037914, guid: d0061c0c7d34647fe9b658a76a6f73e6, type: 2}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1657299490248906, guid: d0061c0c7d34647fe9b658a76a6f73e6, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d0061c0c7d34647fe9b658a76a6f73e6, type: 2}
@@ -558,7 +574,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294967263
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -716,6 +732,10 @@ Prefab:
     - target: {fileID: 4694144066766280, guid: d6bbbf80fe0fa48078171ec422717f2c, type: 2}
       propertyPath: m_RootOrder
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994902560569504, guid: d6bbbf80fe0fa48078171ec422717f2c, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d6bbbf80fe0fa48078171ec422717f2c, type: 2}

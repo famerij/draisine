@@ -146,6 +146,9 @@ public class PuzzleController : MonoBehaviour
 					.ToList();
 			var solved = ConditionController.CheckSolution(blockSprites);
 			Debug.LogFormat("Puzzle solved? {0}", solved);
+			
+			if (solved)
+				ConditionController.CreateNewPuzzle(blockSprites.Count);
 		}
 	}
 }
