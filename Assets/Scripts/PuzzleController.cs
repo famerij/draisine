@@ -21,6 +21,7 @@ public class PuzzleController : MonoBehaviour
 	private PuzzleBlock _selectedBlock;
 	private bool _selection;
 	private bool _swapping;
+	private float _timer;
 	
 	private void Start()
 	{
@@ -150,6 +151,17 @@ public class PuzzleController : MonoBehaviour
 		{
 			ValidatePuzzle();
 		}
+
+		if (_timer < 0f && !_selection && !_swapping)
+		{
+			for (int i = 0; i < Blocks.Count; i++)
+			{
+				Blocks[i].GetComponent<Rigidbody2D>().AddForce(Vector3.up, ForceMode2D.Impulse);
+			}
+			_timer = Random.Range(.8f, 1.2f);
+		}
+
+		_timer -= Time.deltaTime;
 	}
 
 	private bool ValidatePuzzle()
