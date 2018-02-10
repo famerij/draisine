@@ -68,7 +68,11 @@ public class GameController : MonoBehaviour
 						// TODO Turn gate green
 						Gate.Appear(true);
 						MovementSpeed += MovementSpeedBoost;
-						DelayedCall(() => PuzzleController.CreateNewPuzzle(), 2f);
+						DelayedCall(() =>
+						{
+							PuzzleController.CreateNewPuzzle();
+							PuzzleController.ToggleInput(true);
+						}, 2f);
 					}
 					else
 					{
@@ -81,16 +85,20 @@ public class GameController : MonoBehaviour
 		}
 		else
 		{
-			if (PuzzleController.ValidatePuzzle() && !_newPuzzle)
+			if (PuzzleController.ValidatePuzzle())
 			{
 				Gate.Toggle(true);
-				Draisine.StartMovement();
-				_newPuzzle = true;
-				DelayedCall(() =>
+				if (!_newPuzzle)
 				{
-					PuzzleController.CreateNewPuzzle();
-					_newPuzzle = false;
-				}, 2f);
+					Draisine.StartMovement();
+					_newPuzzle = true;
+					DelayedCall(() =>
+					{
+						PuzzleController.CreateNewPuzzle();
+						_newPuzzle = false;
+						PuzzleController.ToggleInput(true);
+					}, 2f);
+				}
 			}
 		}
 	}

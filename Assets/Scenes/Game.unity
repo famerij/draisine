@@ -430,7 +430,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanvasGroup: {fileID: 2111625698}
   Duration: 1
-  In: 0
+  In: 1
 --- !u!4 &558317056
 Transform:
   m_ObjectHideFlags: 0
@@ -818,7 +818,7 @@ CanvasGroup:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2111625697}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0

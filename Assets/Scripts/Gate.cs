@@ -9,6 +9,7 @@ public class Gate : MonoBehaviour
 	public float XPositionOnAppear;
 	public GameObject GreenSprite;
 	public GameObject RedSprite;
+	public Animator GreenGateAnimator;
 	
 	private readonly List<GameObject> _children = new List<GameObject>();
 	private bool _open;
@@ -40,11 +41,6 @@ public class Gate : MonoBehaviour
 		_children.ForEach(c => c.SetActive(true));
 		transform.position = new Vector3(XPositionOnAppear, transform.position.y);
 		Toggle(open);
-
-		if (open)
-		{
-			_audioSource.Play();
-		}
 	}
 
 	public void Disappear()
@@ -58,5 +54,14 @@ public class Gate : MonoBehaviour
 
 		GreenSprite.SetActive(_open);
 		RedSprite.SetActive(!_open);
+	}
+
+	private void OnTriggerEnter2D(Collider2D other)
+	{
+		if (other.CompareTag("Player"))
+		{
+			_audioSource.Play();
+			GreenGateAnimator.SetTrigger("Pass");
+		}
 	}
 }

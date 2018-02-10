@@ -11,8 +11,9 @@ public class FadeFromToBlack : MonoBehaviour
 	
 	private void Start()
 	{
-		if (!In)
+		if (In)
 		{
+			CanvasGroup.alpha = 1f;
 			CanvasGroup.FadeTo(0f, Duration, EasingTypes.Linear);
 		}
 	}

@@ -33,6 +33,7 @@ public class PuzzleController : MonoBehaviour
 	private float _timer;
 	private bool _soundToggle;
 	private bool _firstSound = true;
+	private bool _inputEnabled = true;
 	
 	private void Start()
 	{
@@ -129,51 +130,55 @@ public class PuzzleController : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
+		if (_inputEnabled)
 		{
-			if (!_selection)
-				SpreadBlocks();
-			_selection = true;
-		}
-		if (Input.GetKeyUp(KeyCode.Space))
-		{
-			Blocks.ForEach(b => b.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic);
-			_selection = false;
-		}
-		
-		if (Input.GetKeyDown(KeyCode.DownArrow) && !_swapping)
-		{
-			if (_activeBlock != null && Blocks.IndexOf(_activeBlock) > 0)
+			if (Input.GetKeyDown(KeyCode.Space))
 			{
-//				Debug.LogFormat("Selected block {0}", selectedBlock.name);
-				ActivateTransform(Blocks[Blocks.IndexOf(_activeBlock) - 1].transform);
+				if (!_selection)
+					SpreadBlocks();
+				_selection = true;
 			}
-		}
-		else if (Input.GetKeyDown(KeyCode.UpArrow) && !_swapping)
-		{
-			if (_activeBlock != null && Blocks.IndexOf(_activeBlock) < Blocks.Count - 1)
+
+			if (Input.GetKeyUp(KeyCode.Space))
 			{
-//				Debug.LogFormat("Selected block {0}", selectedBlock.name);
-				ActivateTransform(Blocks[Blocks.IndexOf(_activeBlock) + 1].transform);
+				Blocks.ForEach(b => b.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic);
+				_selection = false;
 			}
-		}
-		else if (Input.GetKeyDown(KeyCode.LeftArrow) && _activeBlock != null)
-		{
-			_activeBlock.ChangeSprite(Direction.Left);
-		}
-		else if (Input.GetKeyDown(KeyCode.RightArrow) && _activeBlock != null)
-		{
-			_activeBlock.ChangeSprite(Direction.Right);
-		}
-		else if (Input.GetKeyDown(KeyCode.Return))
-		{
-			if (ValidatePuzzle())
-				ConditionController.CreateNewPuzzle(Blocks);
-		}
-		
-		if (Input.anyKeyDown)
-		{
-			ValidatePuzzle();
+
+			if (Input.GetKeyDown(KeyCode.DownArrow) && !_swapping)
+			{
+				if (_activeBlock != null && Blocks.IndexOf(_activeBlock) > 0)
+				{
+//				Debug.LogFormat("Selected block {0}", selectedBlock.name);
+					ActivateTransform(Blocks[Blocks.IndexOf(_activeBlock) - 1].transform);
+				}
+			}
+			else if (Input.GetKeyDown(KeyCode.UpArrow) && !_swapping)
+			{
+				if (_activeBlock != null && Blocks.IndexOf(_activeBlock) < Blocks.Count - 1)
+				{
+//				Debug.LogFormat("Selected block {0}", selectedBlock.name);
+					ActivateTransform(Blocks[Blocks.IndexOf(_activeBlock) + 1].transform);
+				}
+			}
+			else if (Input.GetKeyDown(KeyCode.LeftArrow) && _activeBlock != null)
+			{
+				_activeBlock.ChangeSprite(Direction.Left);
+			}
+			else if (Input.GetKeyDown(KeyCode.RightArrow) && _activeBlock != null)
+			{
+				_activeBlock.ChangeSprite(Direction.Right);
+			}
+			else if (Input.GetKeyDown(KeyCode.Return))
+			{
+				if (ValidatePuzzle())
+					ConditionController.CreateNewPuzzle(Blocks);
+			}
+
+			if (Input.anyKeyDown)
+			{
+				ValidatePuzzle();
+			}
 		}
 
 		if (_timer < 0f && !_selection && !_swapping)
@@ -210,7 +215,13 @@ public class PuzzleController : MonoBehaviour
 			.ToList();
 		var solved = ConditionController.CheckSolution(blockSprites);
 //		Debug.LogFormat("Puzzle solved? {0}", solved);
-
+		
+		if (solved) ToggleInput(false);
 		return solved;
+	}
+
+	public void ToggleInput(bool enabled)
+	{
+		_inputEnabled = enabled;
 	}
 }
