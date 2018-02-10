@@ -68,6 +68,13 @@ public class PuzzleController : MonoBehaviour
 		
 		// Rearrange list
 		Blocks.Sort((b1, b2) => b1.transform.position.y.CompareTo(b2.transform.position.y));
+
+		if (!_selection)
+		{
+			Blocks.ForEach(b => b.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic);
+			_swapping = false;
+			yield break;
+		}
 		
 		SpreadBlocks();
 	}
