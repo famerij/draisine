@@ -53,9 +53,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Base: {fileID: 0}
   SpreadHeight: 0.2
+  SwapDuration: 0.2
+  SpreadDuration: 0.2
   Blocks:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  ConditionController: {fileID: 0}

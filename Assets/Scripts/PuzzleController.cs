@@ -14,6 +14,7 @@ public class PuzzleController : MonoBehaviour
 	public float SwapDuration = .2f;
 	public float SpreadDuration = .2f;
 	public List<PuzzleBlock> Blocks = new List<PuzzleBlock>();
+	public PuzzleConditionController ConditionController;
 
 	private Transform _activeTransform;
 	private PuzzleBlock _activeBlock;
@@ -133,6 +134,15 @@ public class PuzzleController : MonoBehaviour
 		else if (Input.GetKeyDown(KeyCode.RightArrow) && _activeBlock != null)
 		{
 			_activeBlock.ChangeSprite(Direction.Right);
+		}
+		else if (Input.GetKeyDown(KeyCode.Return) && ConditionController != null)
+		{
+			var blockSprites = Blocks
+					.Where(b => b.gameObject.activeInHierarchy)
+					.Select(b => b.CurrentSprite)
+					.ToList();
+			var solved = ConditionController.CheckSolution(blockSprites);
+			Debug.LogFormat("Puzzle solved? {0}", solved);
 		}
 	}
 }
