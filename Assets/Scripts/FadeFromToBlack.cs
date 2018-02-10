@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using SimpleEasing;
 using UnityEngine;
@@ -18,8 +19,8 @@ public class FadeFromToBlack : MonoBehaviour
 		}
 	}
 
-	public void FadeIn()
+	public void FadeIn(Action onComplete)
 	{
-		CanvasGroup.FadeTo(1f, Duration, EasingTypes.Linear);
+		CanvasGroup.FadeTo(1f, Duration, EasingTypes.Linear, false, TweenRepeat.Once, onComplete);
 	}
 }

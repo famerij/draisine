@@ -10,7 +10,7 @@ public class Draisine : MonoBehaviour
 	
 	private Animator _animator;
 
-	void Start()
+	private void Awake()
 	{
 		_animator = GetComponent<Animator>();
 	}
