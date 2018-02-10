@@ -12,9 +12,12 @@ public class Gate : MonoBehaviour
 	
 	private readonly List<GameObject> _children = new List<GameObject>();
 	private bool _open;
+	private AudioSource _audioSource;
 
 	void Start()
 	{
+		_audioSource = GetComponent<AudioSource>();
+		
 		for (int i = 0; i < transform.childCount; i++)
 		{
 			_children.Add(transform.GetChild(i).gameObject);
@@ -37,6 +40,11 @@ public class Gate : MonoBehaviour
 		_children.ForEach(c => c.SetActive(true));
 		transform.position = new Vector3(XPositionOnAppear, transform.position.y);
 		Toggle(open);
+
+		if (open)
+		{
+			_audioSource.Play();
+		}
 	}
 
 	public void Disappear()

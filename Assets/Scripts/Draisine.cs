@@ -5,6 +5,8 @@ using UnityEngine;
 public class Draisine : MonoBehaviour
 {
 	public AudioSource EngineAudioSource;
+	public AudioSource SwitchAudioSource;
+	public AudioSource TrackAudioSource;
 	
 	private Animator _animator;
 
@@ -26,16 +28,18 @@ public class Draisine : MonoBehaviour
 	public void EngineStopped()
 	{
 		EngineAudioSource.Stop();
+		TrackAudioSource.Stop();
 	}
 
 	public void PlayStartEngineSound()
 	{
-		//TODO Start sound
+		SwitchAudioSource.Play();
 	}
 	
 	public void EngineStarted()
 	{
 		EngineAudioSource.Play();
+		TrackAudioSource.Play();
 		if (GameController.StartEngine != null)
 			GameController.StartEngine.Invoke();
 	}

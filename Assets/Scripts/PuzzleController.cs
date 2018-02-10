@@ -32,6 +32,7 @@ public class PuzzleController : MonoBehaviour
 	private bool _swapping;
 	private float _timer;
 	private bool _soundToggle;
+	private bool _firstSound = true;
 	
 	private void Start()
 	{
@@ -71,7 +72,12 @@ public class PuzzleController : MonoBehaviour
 		if (_activeBlock != null)
 		{
 			_activeBlock.ActivatedSprites.ForEach(s => s.SetActive(true));
-			ToggleAudioSource.Play();
+			if (!_firstSound)
+			{
+				ToggleAudioSource.Play();
+			}
+
+			_firstSound = false;
 		}
 	}
 
@@ -180,6 +186,12 @@ public class PuzzleController : MonoBehaviour
 		}
 
 		_timer -= Time.deltaTime;
+	}
+
+	public void JumpBlocks()
+	{
+		if (!_swapping)
+			Blocks.ForEach(b => b.GetComponent<Rigidbody2D>().AddForce(Vector3.up * 10f, ForceMode2D.Impulse));
 	}
 
 	public void CreateNewPuzzle()

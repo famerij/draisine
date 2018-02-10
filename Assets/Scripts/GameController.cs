@@ -33,8 +33,12 @@ public class GameController : MonoBehaviour
 	{
 		TravelDistance = 0f;
 		_startMovementSpeed = MovementSpeed;
+		MovementSpeed = 0f;
 
 		StartEngine += StartDraisine;
+
+		_stopped = false;
+		Draisine.StartMovement();
 	}
 
 	private void OnDisable()
@@ -110,7 +114,7 @@ public class GameController : MonoBehaviour
 		});
 		
 		Draisine.StopMovement();
-		PuzzleController.Blocks.ForEach(b => b.GetComponent<Rigidbody2D>().AddForce(Vector3.up * 10f, ForceMode2D.Impulse));
+		PuzzleController.JumpBlocks();
 		_stopped = true;
 	}
 
