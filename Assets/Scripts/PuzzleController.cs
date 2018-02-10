@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Policy;
+using SimpleEasing;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions.Comparers;
@@ -62,7 +63,8 @@ public class PuzzleController : MonoBehaviour
 			Blocks[i].GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
 			var blockBounds = Blocks[i].GetComponent<Collider2D>().bounds;
 			float y = SpreadHeight + yPos + blockBounds.extents.y;
-			Blocks[i].transform.position = new Vector3(Blocks[i].transform.position.x, y);
+			Blocks[i].transform.MoveTo(Blocks[i].transform.position, new Vector3(Blocks[i].transform.position.x, y), .3f,
+				EasingTypes.BackOut);
 			yPos = y + blockBounds.extents.y;
 		}
 	}
