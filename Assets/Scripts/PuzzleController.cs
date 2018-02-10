@@ -4,60 +4,106 @@ using System.Linq;
 using System.Security.Policy;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Assertions.Comparers;
 
 public class PuzzleController : MonoBehaviour
 {
+	public Collider2D Base;
+	public float SpreadHeight = .5f;
 	public List<PuzzleBlock> Blocks = new List<PuzzleBlock>();
 
-	private Transform _selectedTransform;
+	private Transform _activeTransform;
+	private PuzzleBlock _activeBlock;
 	private PuzzleBlock _selectedBlock;
+	private bool _selection;
 	
 	private void Start()
 	{
 		Blocks.ForEach(b => b.ActivatedSprites.ForEach(a => a.SetActive(false)));
 		
-		SelectTransform(Blocks[0].transform);
+		ActivateTransform(Blocks[0].transform);
 	}
 
-	private void SelectTransform(Transform _transform)
+	private void ActivateTransform(Transform _transform)
 	{
-		// Disable previous block
-		if (_selectedBlock != null)
-			_selectedBlock.ActivatedSprites.ForEach(s => s.SetActive(false));
+		if (_selection && _activeBlock != null)
+		{
+			Vector3 currentPos = _activeTransform.position;
+			_activeTransform.position = _transform.position;
+			_transform.position = currentPos;
+			
+			// Rearrange list
+			Blocks.Sort((b1, b2) => b1.transform.position.y.CompareTo(b2.transform.position.y));
+			
+			SpreadBlocks();
+			
+			return;
+		}
 		
-		_selectedTransform = _transform;
-		_selectedBlock = Blocks.Find(block => block.transform == _selectedTransform);
+		// Activation switch
+		//
+		// Disable previous block
+		if (_activeBlock != null)
+			_activeBlock.ActivatedSprites.ForEach(s => s.SetActive(false));
+		
+		_activeTransform = _transform;
+		_activeBlock = Blocks.Find(block => block.transform == _activeTransform);
 		
 		// Enable block
-		if (_selectedBlock != null)
-			_selectedBlock.ActivatedSprites.ForEach(s => s.SetActive(true));
+		if (_activeBlock != null)
+			_activeBlock.ActivatedSprites.ForEach(s => s.SetActive(true));
+	}
+
+	private void SpreadBlocks()
+	{
+		float yPos = Base.transform.position.y + Base.bounds.extents.y;
+		for (int i = 0; i < Blocks.Count; i++)
+		{
+			Blocks[i].GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+			var blockBounds = Blocks[i].GetComponent<Collider2D>().bounds;
+			float y = SpreadHeight + yPos + blockBounds.extents.y;
+			Blocks[i].transform.position = new Vector3(Blocks[i].transform.position.x, y);
+			yPos = y + blockBounds.extents.y;
+		}
 	}
 
 	private void Update()
 	{
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			if (!_selection)
+				SpreadBlocks();
+			_selection = true;
+		}
+		if (Input.GetKeyUp(KeyCode.Space))
+		{
+			Blocks.ForEach(b => b.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic);
+			_selection = false;
+		}
+		
 		if (Input.GetKeyDown(KeyCode.DownArrow))
 		{
-			if (_selectedBlock != null && Blocks.IndexOf(_selectedBlock) > 0)
+			if (_activeBlock != null && Blocks.IndexOf(_activeBlock) > 0)
 			{
 //				Debug.LogFormat("Selected block {0}", selectedBlock.name);
-				SelectTransform(Blocks[Blocks.IndexOf(_selectedBlock) - 1].transform);
+				ActivateTransform(Blocks[Blocks.IndexOf(_activeBlock) - 1].transform);
 			}
 		}
-		if (Input.GetKeyDown(KeyCode.UpArrow))
+		else if (Input.GetKeyDown(KeyCode.UpArrow))
 		{
-			if (_selectedBlock != null && Blocks.IndexOf(_selectedBlock) < Blocks.Count - 1)
+			if (_activeBlock != null && Blocks.IndexOf(_activeBlock) < Blocks.Count - 1)
 			{
 //				Debug.LogFormat("Selected block {0}", selectedBlock.name);
-				SelectTransform(Blocks[Blocks.IndexOf(_selectedBlock) + 1].transform);
+				ActivateTransform(Blocks[Blocks.IndexOf(_activeBlock) + 1].transform);
 			}
 		}
-		if (Input.GetKeyDown(KeyCode.LeftArrow) && _selectedBlock != null)
+		else if (Input.GetKeyDown(KeyCode.LeftArrow) && _activeBlock != null)
 		{
-			_selectedBlock.ChangeSprite(Direction.Left);
+			_activeBlock.ChangeSprite(Direction.Left);
 		}
-		if (Input.GetKeyDown(KeyCode.RightArrow) && _selectedBlock != null)
+		else if (Input.GetKeyDown(KeyCode.RightArrow) && _activeBlock != null)
 		{
-			_selectedBlock.ChangeSprite(Direction.Right);
+			_activeBlock.ChangeSprite(Direction.Right);
 		}
 	}
 }
