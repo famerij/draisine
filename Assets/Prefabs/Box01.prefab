@@ -224,11 +224,8 @@ MonoBehaviour:
   - {fileID: 1689995152709622}
   - {fileID: 1411964237720712}
   SymbolSprites:
-  - {fileID: 21300000, guid: 2a08316eff401427eba65066c1667561, type: 3}
-  - {fileID: 21300000, guid: 3b80e2afe37cd49b489dd68637d41d22, type: 3}
-  - {fileID: 21300000, guid: 740c28a2ba5714956817d0d0fd6d385f, type: 3}
-  - {fileID: 21300000, guid: 3e275fe71c53e4c83bbf82e93f2c4539, type: 3}
-  - {fileID: 21300000, guid: 04623d0d9a23544cfbe6a155c6747d24, type: 3}
+  - {fileID: 21300000, guid: 4b7c13eae8b574b1a85af77a6aa558c7, type: 3}
+  - {fileID: 21300000, guid: 84ab03f8cae8b4b4eaf34e93c345fc79, type: 3}
 --- !u!212 &212233030171191540
 SpriteRenderer:
   m_ObjectHideFlags: 1
