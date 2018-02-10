@@ -7,8 +7,11 @@ public class Gate : MonoBehaviour
 {
 	public Parallax ParallaxToFollow;
 	public float XPositionOnAppear;
-
+	public GameObject GreenSprite;
+	public GameObject RedSprite;
+	
 	private readonly List<GameObject> _children = new List<GameObject>();
+	private bool _open;
 
 	void Start()
 	{
@@ -22,18 +25,30 @@ public class Gate : MonoBehaviour
 
 	void Update()
 	{
-		transform.position +=
-			Vector3.left * Time.deltaTime * ParallaxToFollow.Speed * ParallaxToFollow.NearestSpeedMultiplier;
+		if (ParallaxToFollow)
+		{
+			transform.position +=
+				Vector3.left * Time.deltaTime * ParallaxToFollow.Speed * ParallaxToFollow.NearestSpeedMultiplier;
+		}
 	}
 
-	public void Appear()
+	public void Appear(bool open)
 	{
 		_children.ForEach(c => c.SetActive(true));
 		transform.position = new Vector3(XPositionOnAppear, transform.position.y);
+		Toggle(open);
 	}
 
 	public void Disappear()
 	{
 		_children.ForEach(c => c.SetActive(false));
+	}
+
+	public void Toggle(bool open)
+	{
+		_open = open;
+
+		GreenSprite.SetActive(_open);
+		RedSprite.SetActive(!_open);
 	}
 }

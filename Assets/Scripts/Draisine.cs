@@ -36,5 +36,7 @@ public class Draisine : MonoBehaviour
 	public void EngineStarted()
 	{
 		EngineAudioSource.Play();
+		if (GameController.StartEngine != null)
+			GameController.StartEngine.Invoke();
 	}
 }

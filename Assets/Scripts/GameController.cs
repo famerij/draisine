@@ -6,8 +6,11 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+	public static Action StartEngine;
+	
 	public float MovementSpeed = 3f;
 	public float MovementSpeedIncreaseDivider = 1000f;
+	public float MovementSpeedBoost = .5f;
 	public float WheelSpeedMultiplier = 5f;
 	public float AccelerationDuration = 1f;
 	public float DecelerationDuration = 1f;
@@ -23,13 +26,20 @@ public class GameController : MonoBehaviour
 	
 	private float _startMovementSpeed;
 	private bool _stopped;
+	private int _stoppedCount;
+	private bool _newPuzzle;
 
 	private void Start()
 	{
 		TravelDistance = 0f;
 		_startMovementSpeed = MovementSpeed;
-		
-		StartDraisine();
+
+		StartEngine += StartDraisine;
+	}
+
+	private void OnDisable()
+	{
+		StartEngine -= StartDraisine;
 	}
 
 	private void Update()
@@ -39,9 +49,46 @@ public class GameController : MonoBehaviour
 		Wheels.ForEach(t => t.Rotate(-Vector3.forward, 2 * Mathf.PI * WheelSpeedMultiplier * MovementSpeed * Time.deltaTime));
 		
 		TravelDistance += Time.deltaTime * MovementSpeed;
-		
+
 		if (!_stopped)
+		{
+			if (TravelDistance % 50f < 1f)
+			{
+				TravelDistance += 1f;
+				_stoppedCount++;
+
+				if (_stoppedCount > 1)
+				{
+					if (PuzzleController.ValidatePuzzle())
+					{
+						// TODO Turn gate green
+						Gate.Appear(true);
+						MovementSpeed += MovementSpeedBoost;
+						DelayedCall(() => PuzzleController.CreateNewPuzzle(), 3f);
+					}
+					else
+					{
+						StopDraisine();
+					}
+				}
+			}
+			
 			MovementSpeed += Time.deltaTime / MovementSpeedIncreaseDivider;
+		}
+		else
+		{
+			if (PuzzleController.ValidatePuzzle() && !_newPuzzle)
+			{
+				Gate.Toggle(true);
+				Draisine.StartMovement();
+				_newPuzzle = true;
+				DelayedCall(() =>
+				{
+					PuzzleController.CreateNewPuzzle();
+					_newPuzzle = false;
+				}, 3f);
+			}
+		}
 	}
 
 	private bool _gateShown = false;
@@ -55,11 +102,15 @@ public class GameController : MonoBehaviour
 		}, () =>
 		{
 			MovementSpeed = 2f;
-			Gate.Appear();
-			LerpFloat(MovementSpeed, 0f, 2f, (value) => MovementSpeed = value, () => { MovementSpeed = 0f; });
+			Gate.Appear(false);
+			LerpFloat(MovementSpeed, 0f, 2f, (value) => MovementSpeed = value, () =>
+			{
+				MovementSpeed = 0f;
+			});
 		});
 		
 		Draisine.StopMovement();
+		PuzzleController.Blocks.ForEach(b => b.GetComponent<Rigidbody2D>().AddForce(Vector3.up * 10f, ForceMode2D.Impulse));
 		_stopped = true;
 	}
 
@@ -88,5 +139,16 @@ public class GameController : MonoBehaviour
 		}
 		
 		if (onDone != null) onDone.Invoke();
+	}
+	
+	private void DelayedCall(Action action, float delay)
+	{
+		StartCoroutine(DelayedCallRoutine(action, delay));
+	}
+
+	private IEnumerator DelayedCallRoutine(Action action, float delay)
+	{
+		yield return new WaitForSeconds(delay);
+		action();
 	}
 }

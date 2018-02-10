@@ -8,6 +8,8 @@ public class PuzzleConditionController : MonoBehaviour
 {
 	public List<Sprite> Sprites;
 	public GameObject ConditionSpriteParent;
+	public GameObject SolvedUI;
+	public GameObject UnSolvedUI;
 
 	private readonly List<Sprite> _currentPuzzle = new List<Sprite>();
 	[SerializeField]
@@ -91,7 +93,10 @@ public class PuzzleConditionController : MonoBehaviour
 				_conditionSprites[i].ValidationImage.color = Color.green;
 			}
 		}
-
+		
+		SolvedUI.SetActive(solved);
+		UnSolvedUI.SetActive(!solved);
+		
 //		Debug.Log(text);
 		return solved;
 	}

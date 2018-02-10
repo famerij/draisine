@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
@@ -7,6 +8,7 @@ using SimpleEasing;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions.Comparers;
+using Random = UnityEngine.Random;
 
 public class PuzzleController : MonoBehaviour
 {
@@ -180,7 +182,13 @@ public class PuzzleController : MonoBehaviour
 		_timer -= Time.deltaTime;
 	}
 
-	private bool ValidatePuzzle()
+	public void CreateNewPuzzle()
+	{
+		ConditionController.CreateNewPuzzle(Blocks);
+		ValidatePuzzle();
+	}
+	
+	public bool ValidatePuzzle()
 	{
 		if (ConditionController == null) return false;
 		

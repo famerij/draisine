@@ -1154,6 +1154,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 70c9b2b3dc62c440fb36a06832a20dca, type: 3}
   - {fileID: 21300000, guid: 31d532e7489c247fe93b5eac3ff3a574, type: 3}
   ConditionSpriteParent: {fileID: 1098359955996488}
+  SolvedUI: {fileID: 1936855607775024}
+  UnSolvedUI: {fileID: 1587803778000328}
   _conditionSprites: []
 --- !u!222 &222025279587234002
 CanvasRenderer:
