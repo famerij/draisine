@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Security.Policy;
 using SimpleEasing;
 using UnityEditor;
@@ -15,6 +16,12 @@ public class PuzzleController : MonoBehaviour
 	public float SpreadDuration = .2f;
 	public List<PuzzleBlock> Blocks = new List<PuzzleBlock>();
 	public PuzzleConditionController ConditionController;
+	
+	[Header("Audio")]
+	public AudioSource ToggleAudioSource;
+	public AudioSource SwapAudioSource;
+	public AudioClip SwapSound1;
+	public AudioClip SwapSound2;
 
 	private Transform _activeTransform;
 	private PuzzleBlock _activeBlock;
@@ -22,6 +29,7 @@ public class PuzzleController : MonoBehaviour
 	private bool _selection;
 	private bool _swapping;
 	private float _timer;
+	private bool _soundToggle;
 	
 	private void Start()
 	{
@@ -59,7 +67,10 @@ public class PuzzleController : MonoBehaviour
 		
 		// Enable block
 		if (_activeBlock != null)
+		{
 			_activeBlock.ActivatedSprites.ForEach(s => s.SetActive(true));
+			ToggleAudioSource.Play();
+		}
 	}
 
 	private IEnumerator SwitchBlocks(Transform _other)
@@ -70,7 +81,10 @@ public class PuzzleController : MonoBehaviour
 		_activeTransform.MoveTo(_activeTransform.position, _other.position, SwapDuration, EasingTypes.BackOut);
 		_other.MoveTo(_other.position, currentPos, SwapDuration, EasingTypes.BackOut);
 		_swapping = true;
-		
+
+		SwapAudioSource.clip = _soundToggle ? SwapSound1 : SwapSound2;
+		_soundToggle = !_soundToggle;
+		SwapAudioSource.Play();
 		yield return new WaitForSeconds(SwapDuration);
 		
 		// Rearrange list
@@ -175,7 +189,7 @@ public class PuzzleController : MonoBehaviour
 			.Select(b => b.CurrentSprite)
 			.ToList();
 		var solved = ConditionController.CheckSolution(blockSprites);
-		Debug.LogFormat("Puzzle solved? {0}", solved);
+//		Debug.LogFormat("Puzzle solved? {0}", solved);
 
 		return solved;
 	}

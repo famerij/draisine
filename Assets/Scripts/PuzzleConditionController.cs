@@ -41,12 +41,12 @@ public class PuzzleConditionController : MonoBehaviour
 			scrambles++;
 		}
 
-		string randoms = "Randoms:\n";
-		for (int i = 0; i < indices.Length; i++)
-		{
-			randoms += indices[i] + "\n";
-		}
-		Debug.Log(randoms);
+//		string randoms = "Randoms:\n";
+//		for (int i = 0; i < indices.Length; i++)
+//		{
+//			randoms += indices[i] + "\n";
+//		}
+//		Debug.Log(randoms);
 		
 		for (int i = 0; i < indices.Length; i++)
 		{
@@ -92,7 +92,7 @@ public class PuzzleConditionController : MonoBehaviour
 			}
 		}
 
-		Debug.Log(text);
+//		Debug.Log(text);
 		return solved;
 	}
 }

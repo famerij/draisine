@@ -10,6 +10,8 @@ public class PuzzleBlock : MonoBehaviour
 	public List<GameObject> ActivatedSprites;
 	public List<Sprite> SymbolSprites;
 
+	private AudioSource _audioSource;
+
 	public Sprite CurrentSprite
 	{
 		get { return SymbolSprites[_currentSpriteIndex]; }
@@ -19,6 +21,7 @@ public class PuzzleBlock : MonoBehaviour
 	
 	private void Awake()
 	{
+		_audioSource = GetComponent<AudioSource>();
 		_currentSpriteIndex = Random.Range(0, SymbolSprites.Count);
 		UpdateSprite();
 	}
@@ -37,6 +40,8 @@ public class PuzzleBlock : MonoBehaviour
 				{
 					_currentSpriteIndex--;
 					UpdateSprite();
+					_audioSource.pitch = .95f;
+					_audioSource.Play();
 				}
 				else
 				{
@@ -48,6 +53,8 @@ public class PuzzleBlock : MonoBehaviour
 				{
 					_currentSpriteIndex++;
 					UpdateSprite();
+					_audioSource.pitch = 1.05f;
+					_audioSource.Play();
 				}
 				else
 				{
