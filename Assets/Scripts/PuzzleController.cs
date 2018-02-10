@@ -31,6 +31,9 @@ public class PuzzleController : MonoBehaviour
 		});
 		
 		ActivateTransform(Blocks[0].transform);
+		
+		if (ConditionController)
+			ConditionController.CreateNewPuzzle(Blocks.Count);
 	}
 
 	private void ActivateTransform(Transform _transform)

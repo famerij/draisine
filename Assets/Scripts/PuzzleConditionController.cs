@@ -10,12 +10,7 @@ public class PuzzleConditionController : MonoBehaviour
 
 	private readonly List<Sprite> _currentPuzzle = new List<Sprite>();
 
-	private void Start()
-	{
-		CreateNewPuzzle(3);
-	}
-
-	private void CreateNewPuzzle(int length)
+	public void CreateNewPuzzle(int length)
 	{
 		_currentPuzzle.Clear();
 		for (int i = 0; i < length; i++)
@@ -48,6 +43,7 @@ public class PuzzleConditionController : MonoBehaviour
 				return false;
 		}
 		
+		CreateNewPuzzle(_currentPuzzle.Count);
 		return true;
 	}
 }
