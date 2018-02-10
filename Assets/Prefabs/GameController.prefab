@@ -53,6 +53,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MovementSpeed: 3
   MovementSpeedIncreaseDivider: 100
+  MovementSpeedBoost: 0.5
   WheelSpeedMultiplier: 18
   AccelerationDuration: 3
   DecelerationDuration: 2
@@ -64,3 +65,4 @@ MonoBehaviour:
   - {fileID: 0}
   Draisine: {fileID: 0}
   Gate: {fileID: 0}
+  Score: {fileID: 0}

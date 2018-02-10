@@ -23,11 +23,13 @@ public class GameController : MonoBehaviour
 	public List<Transform> Wheels;
 	public Draisine Draisine;
 	public Gate Gate;
+	public Score Score;
 	
 	private float _startMovementSpeed;
 	private bool _stopped;
 	private int _stoppedCount;
 	private bool _newPuzzle;
+	private int _score;
 
 	private void Start()
 	{
@@ -65,9 +67,10 @@ public class GameController : MonoBehaviour
 				{
 					if (PuzzleController.ValidatePuzzle())
 					{
-						// TODO Turn gate green
 						Gate.Appear(true);
 						MovementSpeed += MovementSpeedBoost;
+						_score++;
+						Score.UpdateScore(_score);
 						DelayedCall(() =>
 						{
 							PuzzleController.CreateNewPuzzle();
@@ -77,6 +80,8 @@ public class GameController : MonoBehaviour
 					else
 					{
 						StopDraisine();
+						_score = 0;
+						Score.UpdateScore(_score);
 					}
 				}
 			}
