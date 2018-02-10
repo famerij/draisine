@@ -64,7 +64,7 @@ public class GameController : MonoBehaviour
 						// TODO Turn gate green
 						Gate.Appear(true);
 						MovementSpeed += MovementSpeedBoost;
-						DelayedCall(() => PuzzleController.CreateNewPuzzle(), 3f);
+						DelayedCall(() => PuzzleController.CreateNewPuzzle(), 2f);
 					}
 					else
 					{
@@ -86,7 +86,7 @@ public class GameController : MonoBehaviour
 				{
 					PuzzleController.CreateNewPuzzle();
 					_newPuzzle = false;
-				}, 3f);
+				}, 2f);
 			}
 		}
 	}
