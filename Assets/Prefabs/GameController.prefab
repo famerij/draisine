@@ -51,8 +51,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c6e85080a998497d9980cb261f5312a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MovementSpeed: 1
+  MovementSpeed: 3
+  MovementSpeedIncreaseDivider: 100
   WheelSpeedMultiplier: 18
+  AccelerationDuration: 3
+  DecelerationDuration: 3
+  TravelDistance: 0
   PuzzleController: {fileID: 0}
   ParallaxBackground: {fileID: 0}
   Wheels:
