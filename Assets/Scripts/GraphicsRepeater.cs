@@ -34,15 +34,14 @@ public class GraphicsRepeater : MonoBehaviour
 	
 	void Update()
 	{
-		if (_graphics.Last() != null && _graphics.Last().transform.position.x < DestroyGraphicsDistance)
-		{
-			AddGraphic();
-		}
+//		if (_graphics.Last() != null && _graphics.Last().transform.position.x < DestroyGraphicsDistance)
+//		{
+//			AddGraphic();
+//		}
 		
 		if (_graphics[0].transform.position.x < -DestroyGraphicsDistance)
 		{
-			Destroy(_graphics[0].gameObject);
-			_graphics.RemoveAt(0);
+			MoveFirstToLast();
 		}	
 	}
 
@@ -56,5 +55,16 @@ public class GraphicsRepeater : MonoBehaviour
 		float y = _originalPosition.y + (Mathf.Approximately(YMax, 0f) ? 0f : Random.Range(YMin, YMax));
 		newGraphics.transform.position = new Vector3(x, y);
 		_graphics.Add(newGraphics.GetComponent<SpriteRenderer>());
+	}
+
+	void MoveFirstToLast()
+	{
+		var first = _graphics.First();
+		float x = _graphics.Last().transform.position.x + (_graphics.Last().bounds.size.x - .1f) + 
+		          (Mathf.Approximately(SpacingMax, 0f) ? 0f : Random.Range(SpacingMin, SpacingMax));
+		float y = _originalPosition.y + (Mathf.Approximately(YMax, 0f) ? 0f : Random.Range(YMin, YMax));
+		first.transform.position = new Vector3(x, y);
+		_graphics.Remove(first);
+		_graphics.Add(first);
 	}
 }
