@@ -59,11 +59,6 @@ public class PuzzleConditionController : MonoBehaviour
 		UpdateUI();
 	}
 
-	private void Swap()
-	{
-		
-	}
-
 	private void UpdateUI()
 	{
 		for (int i = 0; i < _conditionSprites.Count; i++)
