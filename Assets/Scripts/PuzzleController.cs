@@ -33,7 +33,7 @@ public class PuzzleController : MonoBehaviour
 		ActivateTransform(Blocks[0].transform);
 		
 		if (ConditionController)
-			ConditionController.CreateNewPuzzle(Blocks.Count);
+			ConditionController.CreateNewPuzzle(Blocks);
 	}
 
 	private void ActivateTransform(Transform _transform)
@@ -148,7 +148,7 @@ public class PuzzleController : MonoBehaviour
 			Debug.LogFormat("Puzzle solved? {0}", solved);
 			
 			if (solved)
-				ConditionController.CreateNewPuzzle(blockSprites.Count);
+				ConditionController.CreateNewPuzzle(Blocks);
 		}
 	}
 }

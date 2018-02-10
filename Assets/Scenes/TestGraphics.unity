@@ -691,6 +691,10 @@ Prefab:
       propertyPath: ConditionController
       value: 
       objectReference: {fileID: 616697546}
+    - target: {fileID: 1738710878786508, guid: 83d577e9e564e474dbfdfed1c4efb0c1, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 83d577e9e564e474dbfdfed1c4efb0c1, type: 2}
   m_IsPrefabParent: 0

@@ -11,50 +11,50 @@ public class PuzzleConditionController : MonoBehaviour
 
 	private readonly List<Sprite> _currentPuzzle = new List<Sprite>();
 
-	public void CreateNewPuzzle(int length)
+	
+	public void CreateNewPuzzle(List<PuzzleBlock> blocks)
 	{
+		int length = blocks.Count;
 		_currentPuzzle.Clear();
-		var randomIndices = new int[length];
-		for (int i = 0; i < length; i++)
+		var indices = new int[length];
+		for (int i = 0; i < indices.Length; i++)
 		{
-			randomIndices[i] = i;
+			indices[i] = i;
 		}
-
-		string randoms = "";
-		for (int i = 0; i < length; i++)
-		{
-			int randomIndex;
-			do
-			{
-				randomIndex = Random.Range(0, length);
-				randomIndices[i] = randomIndex;
-			} while (!Validate(randomIndices));
-
-			randoms += randomIndex + " ";
-		}
-
-		Debug.LogFormat("Randoms: {0}", randoms);
 		
-		for (int i = 0; i < randomIndices.Length; i++)
+		// Scramble the indices
+		int scrambles = 0;
+		while (scrambles < 50)
 		{
-			var index = randomIndices[i];
-			_currentPuzzle.Add(Sprites[index]);
+			int i = Random.Range(0, indices.Length);
+			int next = i == indices.Length - 1 ? 0 : i + 1;
+			int nextValue = indices[next];
+			indices[next] = indices[i];
+			indices[i] = nextValue;
+			scrambles++;
+		}
+
+		string randoms = "Randoms:\n";
+		for (int i = 0; i < indices.Length; i++)
+		{
+			randoms += indices[i] + "\n";
+		}
+		Debug.Log(randoms);
+		
+		for (int i = 0; i < indices.Length; i++)
+		{
+			var index = indices[i];
+			var randomSpriteIndex = Random.Range(0, blocks[index].SymbolSprites.Count);
+			var sprite = blocks[index].SymbolSprites[randomSpriteIndex];
+			_currentPuzzle.Add(sprite);
 		}
 		
 		UpdateUI();
 	}
 
-	private bool Validate(int[] indices)
+	private void Swap()
 	{
-		int indexCount;
-		for (int i = 0; i < indices.Length; i++)
-		{
-			indexCount = indices.Count(idx => idx == i);
-			if (indexCount > 2)
-				return false;
-		}
-
-		return true;
+		
 	}
 
 	private void UpdateUI()
