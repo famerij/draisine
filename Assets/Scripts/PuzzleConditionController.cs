@@ -7,10 +7,17 @@ using UnityEngine.UI;
 public class PuzzleConditionController : MonoBehaviour
 {
 	public List<Sprite> Sprites;
-	public List<Image> UISprites;
+	public GameObject ConditionSpriteParent;
 
 	private readonly List<Sprite> _currentPuzzle = new List<Sprite>();
+	[SerializeField]
+	private List<ConditionSprite> _conditionSprites;
 
+	private void Awake()
+	{
+		_conditionSprites = ConditionSpriteParent.GetComponentsInChildren<ConditionSprite>().ToList();
+		_conditionSprites.Reverse();
+	}
 	
 	public void CreateNewPuzzle(List<PuzzleBlock> blocks)
 	{
@@ -59,14 +66,14 @@ public class PuzzleConditionController : MonoBehaviour
 
 	private void UpdateUI()
 	{
-		for (int i = 0; i < UISprites.Count; i++)
+		for (int i = 0; i < _conditionSprites.Count; i++)
 		{
 			if (i >= _currentPuzzle.Count)
-				UISprites[i].enabled = false;
+				_conditionSprites[i].enabled = false;
 			else
 			{
-				UISprites[i].enabled = true;
-				UISprites[i].sprite = _currentPuzzle[i];
+				_conditionSprites[i].enabled = true;
+				_conditionSprites[i].SymbolImage.sprite = _currentPuzzle[i];
 			}
 		}
 	}
@@ -80,7 +87,14 @@ public class PuzzleConditionController : MonoBehaviour
 			text += "Try: " + solution[i].name + "\n";
 			text += "Solution: " + _currentPuzzle[i].name + "\n";
 			if (solution[i] != _currentPuzzle[i])
+			{
 				solved = false;
+				_conditionSprites[i].ValidationImage.color = Color.red;
+			}
+			else
+			{
+				_conditionSprites[i].ValidationImage.color = Color.green;
+			}
 		}
 
 		Debug.Log(text);

@@ -72,7 +72,9 @@ public class PuzzleController : MonoBehaviour
 		
 		// Rearrange list
 		Blocks.Sort((b1, b2) => b1.transform.position.y.CompareTo(b2.transform.position.y));
-
+		
+		ValidatePuzzle();
+		
 		if (!_selection)
 		{
 			Blocks.ForEach(b => b.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic);
@@ -138,17 +140,29 @@ public class PuzzleController : MonoBehaviour
 		{
 			_activeBlock.ChangeSprite(Direction.Right);
 		}
-		else if (Input.GetKeyDown(KeyCode.Return) && ConditionController != null)
+		else if (Input.GetKeyDown(KeyCode.Return))
 		{
-			var blockSprites = Blocks
-					.Where(b => b.gameObject.activeInHierarchy)
-					.Select(b => b.CurrentSprite)
-					.ToList();
-			var solved = ConditionController.CheckSolution(blockSprites);
-			Debug.LogFormat("Puzzle solved? {0}", solved);
-			
-			if (solved)
+			if (ValidatePuzzle())
 				ConditionController.CreateNewPuzzle(Blocks);
 		}
+		
+		if (Input.anyKeyDown)
+		{
+			ValidatePuzzle();
+		}
+	}
+
+	private bool ValidatePuzzle()
+	{
+		if (ConditionController == null) return false;
+		
+		var blockSprites = Blocks
+			.Where(b => b.gameObject.activeInHierarchy)
+			.Select(b => b.CurrentSprite)
+			.ToList();
+		var solved = ConditionController.CheckSolution(blockSprites);
+		Debug.LogFormat("Puzzle solved? {0}", solved);
+
+		return solved;
 	}
 }
