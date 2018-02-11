@@ -200,7 +200,7 @@ public class PuzzleController : MonoBehaviour
 		{
 			Blocks.ForEach(b => b.GetComponent<Rigidbody2D>().AddForce(Vector3.up * 10f, ForceMode2D.Impulse));
 			DelayedCall(() => { _inputEnabled = true; }, 1f);
-		}, 1f);
+		}, .1f);
 	}
 
 	public void CreateNewPuzzle()

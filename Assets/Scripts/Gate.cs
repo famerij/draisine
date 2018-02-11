@@ -17,9 +17,11 @@ public class Gate : MonoBehaviour
 	private readonly List<GameObject> _children = new List<GameObject>();
 	private bool _open;
 	private AudioSource _audioSource;
+	private Collider2D _collider;
 
 	void Start()
 	{
+		_collider = GetComponent<Collider2D>();
 		_audioSource = GetComponent<AudioSource>();
 		
 		for (int i = 0; i < transform.childCount; i++)
@@ -42,6 +44,7 @@ public class Gate : MonoBehaviour
 	public void Appear(bool open)
 	{
 		_children.ForEach(c => c.SetActive(true));
+		_collider.enabled = true;
 		transform.position = new Vector3(XPositionOnAppear, transform.position.y);
 		Toggle(open);
 	}
@@ -49,6 +52,7 @@ public class Gate : MonoBehaviour
 	public void Disappear()
 	{
 		_children.ForEach(c => c.SetActive(false));
+		_collider.enabled = false;
 	}
 
 	public void Toggle(bool open)

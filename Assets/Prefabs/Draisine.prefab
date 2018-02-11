@@ -1275,6 +1275,7 @@ MonoBehaviour:
   EngineAudioSource: {fileID: 82238036636686014}
   SwitchAudioSource: {fileID: 82503722073568832}
   TrackAudioSource: {fileID: 82886389569426316}
+  EngineStopSound: {fileID: 8300000, guid: 071f0e2de184b43fd81760ecb8247a17, type: 3}
 --- !u!198 &198311305240913782
 ParticleSystem:
   m_ObjectHideFlags: 1

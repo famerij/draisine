@@ -7,6 +7,8 @@ public class Draisine : MonoBehaviour
 	public AudioSource EngineAudioSource;
 	public AudioSource SwitchAudioSource;
 	public AudioSource TrackAudioSource;
+
+	public AudioClip EngineStopSound;
 	
 	private Animator _animator;
 
@@ -29,6 +31,11 @@ public class Draisine : MonoBehaviour
 	{
 		EngineAudioSource.Stop();
 		TrackAudioSource.Stop();
+	}
+
+	public void EngineBreak()
+	{
+		SwitchAudioSource.PlayOneShot(EngineStopSound);
 	}
 
 	public void PlayStartEngineSound()
