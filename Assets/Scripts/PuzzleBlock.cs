@@ -9,6 +9,7 @@ public class PuzzleBlock : MonoBehaviour
 	public SpriteRenderer SymbolRenderer;
 	public List<GameObject> ActivatedSprites;
 	public List<Sprite> SymbolSprites;
+	public AudioClip CollisionSound;
 
 	private AudioSource _audioSource;
 
@@ -40,6 +41,7 @@ public class PuzzleBlock : MonoBehaviour
 				{
 					_currentSpriteIndex--;
 					UpdateSprite();
+					_audioSource.volume = 1f;
 					_audioSource.pitch = .95f;
 					_audioSource.Play();
 				}
@@ -53,6 +55,7 @@ public class PuzzleBlock : MonoBehaviour
 				{
 					_currentSpriteIndex++;
 					UpdateSprite();
+					_audioSource.volume = 1f;
 					_audioSource.pitch = 1.05f;
 					_audioSource.Play();
 				}
@@ -61,6 +64,15 @@ public class PuzzleBlock : MonoBehaviour
 					// TODO: Fail effect
 				}
 				break;
+		}
+	}
+
+	private void OnCollisionEnter2D(Collision2D other)
+	{
+		if (other.relativeVelocity.magnitude > 5f && other.gameObject.CompareTag("Base"))
+		{
+			_audioSource.volume = .3f;
+			_audioSource.PlayOneShot(CollisionSound);
 		}
 	}
 }
