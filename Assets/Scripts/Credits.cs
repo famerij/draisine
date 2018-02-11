@@ -3,6 +3,9 @@ using UnityEngine.SceneManagement;
 
 public class Credits : MonoBehaviour
 {
+	public AudioSource AudioSource;
+	public AudioClip WhineClip;
+	
 	public FadeFromToBlack FadeIn;
 
 	private bool _fading;
@@ -17,5 +20,10 @@ public class Credits : MonoBehaviour
 				SceneManager.LoadScene("Tutorial");
 			});
 		}
+	}
+
+	public void PlayWhine()
+	{
+		AudioSource.PlayOneShot(WhineClip);
 	}
 }
