@@ -18,6 +18,9 @@ public class PuzzleConditionController : MonoBehaviour
 	[SerializeField]
 	private List<ConditionSprite> _conditionSprites;
 
+	private readonly Color Green = new Color(0f, 1f, 0f, 200f/255f);
+	private readonly Color Red = new Color(1f, 0f, 0f, 200f/255f);
+	
 	private AudioSource _audioSource;
 	private bool _solved;
 
@@ -80,7 +83,7 @@ public class PuzzleConditionController : MonoBehaviour
 			for (int i = 0; i < _conditionSprites.Count; i++)
 			{
 				int rand = Random.Range(0, 2);
-				Color randomColor = rand == 0 ? Color.green : Color.red;
+				Color randomColor = rand == 0 ? Green : Red;
 				if (frameCount % 6 == 0)
 				{
 					_conditionSprites[i].ValidationImage.color =  randomColor;
@@ -124,11 +127,11 @@ public class PuzzleConditionController : MonoBehaviour
 			if (solution[i] != _currentPuzzle[i])
 			{
 				solved = false;
-				_conditionSprites[i].ValidationImage.color = Color.red;
+				_conditionSprites[i].ValidationImage.color = Red;
 			}
 			else
 			{
-				_conditionSprites[i].ValidationImage.color = Color.green;
+				_conditionSprites[i].ValidationImage.color = Green;
 			}
 		}
 		
