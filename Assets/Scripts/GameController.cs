@@ -9,13 +9,17 @@ public class GameController : MonoBehaviour
 	public static Action StartEngine;
 	
 	public float MovementSpeed = 3f;
-	public float MovementSpeedIncreaseDivider = 1000f;
-	public float MovementSpeedBoost = .5f;
 	public float WheelSpeedMultiplier = 5f;
 	public float AccelerationDuration = 1f;
 	public float DecelerationDuration = 1f;
-
+	
 	public float TravelDistance;
+	
+	[Header("Game Balance")]
+	public float MovementSpeedIncreaseDivider = 1000f;
+	public float MovementSpeedBoost = .5f;
+	public float GateDistanceThreshold = 150f; 
+	
 	
 	[Header("References")]
 	public PuzzleController PuzzleController;
@@ -58,7 +62,7 @@ public class GameController : MonoBehaviour
 
 		if (!_stopped)
 		{
-			if (TravelDistance % 50f < 1f)
+			if (TravelDistance % GateDistanceThreshold < 1f)
 			{
 				TravelDistance += 1f;
 				_stoppedCount++;
