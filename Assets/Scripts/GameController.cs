@@ -65,7 +65,7 @@ public class GameController : MonoBehaviour
 
 		float diminisher = 1f;
 		if (_score > 0)
-			diminisher = Mathf.Clamp(1f - (_score * 0.1f), .4f, 1f);
+			diminisher = Mathf.Clamp(1f - (_score * 0.1f), .6f, 1f);
 		TravelDistance += Time.deltaTime * MovementSpeed * diminisher;
 
 		if (!_stopped)
@@ -106,6 +106,7 @@ public class GameController : MonoBehaviour
 				{
 					Draisine.StartMovement();
 					_newPuzzle = true;
+					TravelDistance = TravelDistance - TravelDistance % GateDistanceThreshold + 2f;
 					DelayedCall(() =>
 					{
 						PuzzleController.CreateNewPuzzle();
@@ -121,7 +122,7 @@ public class GameController : MonoBehaviour
 	private void OnPuzzleSolved()
 	{
 		float modulo = TravelDistance % GateDistanceThreshold;
-		if (modulo < 10f) return;
+		if (modulo < 5f) return;
 		float distanceToJumpTo = GateDistanceThreshold - 10f;
 		Debug.LogFormat("Puzzle soled at distance {0} % {1} = {2}", TravelDistance, GateDistanceThreshold, modulo);
 		if (modulo < distanceToJumpTo)
