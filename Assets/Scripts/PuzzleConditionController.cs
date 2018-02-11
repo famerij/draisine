@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class PuzzleConditionController : MonoBehaviour
 {
@@ -35,27 +37,50 @@ public class PuzzleConditionController : MonoBehaviour
 		
 		// Scramble the indices
 		int scrambles = 0;
-		while (scrambles < 50)
+		StartCoroutine(ScrambleAnimation(() =>
 		{
-			int i = Random.Range(0, indices.Length);
-			int next = i == indices.Length - 1 ? 0 : i + 1;
-			int nextValue = indices[next];
-			indices[next] = indices[i];
-			indices[i] = nextValue;
-			scrambles++;
-		}
+			while (scrambles < 50)
+			{
+				int i = Random.Range(0, indices.Length);
+				int next = i == indices.Length - 1 ? 0 : i + 1;
+				int nextValue = indices[next];
+				indices[next] = indices[i];
+				indices[i] = nextValue;
+				scrambles++;
+			}
+			
+			for (int i = 0; i < indices.Length; i++)
+			{
+				var index = indices[i];
+				var randomSpriteIndex = Random.Range(0, blocks[index].SymbolSprites.Count);
+				var sprite = blocks[index].SymbolSprites[randomSpriteIndex];
+				_currentPuzzle.Add(sprite);
+			}
 		
-		for (int i = 0; i < indices.Length; i++)
-		{
-			var index = indices[i];
-			var randomSpriteIndex = Random.Range(0, blocks[index].SymbolSprites.Count);
-			var sprite = blocks[index].SymbolSprites[randomSpriteIndex];
-			_currentPuzzle.Add(sprite);
-		}
-		
-		UpdateUI();
+			UpdateUI();
 
-		_solved = false;
+			_solved = false;
+		}));
+	}
+
+	private IEnumerator ScrambleAnimation(Action onDone)
+	{
+		float timer = 0f;
+
+		while (timer < 1f)
+		{
+			timer += Time.deltaTime;
+			for (int i = 0; i < _conditionSprites.Count; i++)
+			{
+				_conditionSprites[i].ValidationImage.color = Color.red;
+				_conditionSprites[i].SymbolImage.sprite = Sprites[Random.Range(0, Sprites.Count)];
+			}
+			
+			yield return new WaitForEndOfFrame();
+		}
+		
+		
+		onDone();
 	}
 
 	private void UpdateUI()
@@ -74,6 +99,8 @@ public class PuzzleConditionController : MonoBehaviour
 
 	public bool CheckSolution(List<Sprite> solution)
 	{
+		if (_currentPuzzle.Count < solution.Count) return false;
+		
 		bool solved = true;
 		string text = "Checking Solution\n";
 		for (int i = 0; i < solution.Count; i++)
