@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 212374451895211162}
   - component: {fileID: 61904054460357322}
   - component: {fileID: 50662542357619820}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Arm
   m_TagString: Player
   m_Icon: {fileID: 0}

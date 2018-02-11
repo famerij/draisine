@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 114875070938955606}
   - component: {fileID: 82758175571414544}
   - component: {fileID: 61215768768139766}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Gate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4596905573783804}
   - component: {fileID: 212863920155003242}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Gate02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ GameObject:
   - component: {fileID: 4201903637238726}
   - component: {fileID: 212629466665755602}
   - component: {fileID: 95516027907631806}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LaserGateGreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4673721004976702}
   - component: {fileID: 212172743566141160}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Gate01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4995697453645836}
   - component: {fileID: 212818131785954832}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LaserGateRed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
