@@ -15,6 +15,8 @@ public class PuzzleConditionController : MonoBehaviour
 	[SerializeField]
 	private List<ConditionSprite> _conditionSprites;
 
+	private bool _solved;
+
 	private void Awake()
 	{
 		_conditionSprites = ConditionSpriteParent.GetComponentsInChildren<ConditionSprite>().ToList();
@@ -42,13 +44,6 @@ public class PuzzleConditionController : MonoBehaviour
 			indices[i] = nextValue;
 			scrambles++;
 		}
-
-//		string randoms = "Randoms:\n";
-//		for (int i = 0; i < indices.Length; i++)
-//		{
-//			randoms += indices[i] + "\n";
-//		}
-//		Debug.Log(randoms);
 		
 		for (int i = 0; i < indices.Length; i++)
 		{
@@ -59,6 +54,8 @@ public class PuzzleConditionController : MonoBehaviour
 		}
 		
 		UpdateUI();
+
+		_solved = false;
 	}
 
 	private void UpdateUI()
@@ -96,8 +93,13 @@ public class PuzzleConditionController : MonoBehaviour
 		
 		SolvedUI.SetActive(solved);
 		UnSolvedUI.SetActive(!solved);
+
+		if (solved && !_solved)
+		{
+			GameController.PuzzleSolved();
+			_solved = true;
+		}
 		
-//		Debug.Log(text);
 		return solved;
 	}
 }

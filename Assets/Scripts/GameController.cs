@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
 	public static Action StartEngine;
+	public static Action PuzzleSolved;
 	
 	public float MovementSpeed = 3f;
 	public float WheelSpeedMultiplier = 5f;
@@ -18,7 +20,7 @@ public class GameController : MonoBehaviour
 	[Header("Game Balance")]
 	public float MovementSpeedIncreaseDivider = 1000f;
 	public float MovementSpeedBoost = .5f;
-	public float GateDistanceThreshold = 150f; 
+	public float GateDistanceThreshold = 150f;
 	
 	
 	[Header("References")]
@@ -34,6 +36,7 @@ public class GameController : MonoBehaviour
 	private int _stoppedCount;
 	private bool _newPuzzle;
 	private int _score;
+	private float _modulo;
 
 	private void Start()
 	{
@@ -42,6 +45,7 @@ public class GameController : MonoBehaviour
 		MovementSpeed = 0f;
 
 		StartEngine += StartDraisine;
+		PuzzleSolved += OnPuzzleSolved;
 
 		_stopped = false;
 		Draisine.StartMovement();
@@ -50,6 +54,7 @@ public class GameController : MonoBehaviour
 	private void OnDisable()
 	{
 		StartEngine -= StartDraisine;
+		PuzzleSolved -= OnPuzzleSolved;
 	}
 
 	private void Update()
@@ -57,36 +62,36 @@ public class GameController : MonoBehaviour
 		ParallaxBackground.Speed = MovementSpeed;
 		
 		Wheels.ForEach(t => t.Rotate(-Vector3.forward, 2 * Mathf.PI * WheelSpeedMultiplier * MovementSpeed * Time.deltaTime));
-		
-		TravelDistance += Time.deltaTime * MovementSpeed;
+
+		float diminisher = 1f;
+		if (_score > 0)
+			diminisher = Mathf.Clamp(1f - (_score * 0.1f), .4f, 1f);
+		TravelDistance += Time.deltaTime * MovementSpeed * diminisher;
 
 		if (!_stopped)
 		{
-			if (TravelDistance % GateDistanceThreshold < 1f)
+			if (TravelDistance > GateDistanceThreshold && TravelDistance % GateDistanceThreshold < 1f)
 			{
 				TravelDistance += 1f;
 				_stoppedCount++;
-
-				if (_stoppedCount > 1)
+				
+				if (PuzzleController.ValidatePuzzle())
 				{
-					if (PuzzleController.ValidatePuzzle())
+					Gate.Appear(true);
+					MovementSpeed += MovementSpeedBoost;
+					_score++;
+					Score.UpdateScore(_score);
+					DelayedCall(() =>
 					{
-						Gate.Appear(true);
-						MovementSpeed += MovementSpeedBoost;
-						_score++;
-						Score.UpdateScore(_score);
-						DelayedCall(() =>
-						{
-							PuzzleController.CreateNewPuzzle();
-							PuzzleController.ToggleInput(true);
-						}, 2f);
-					}
-					else
-					{
-						StopDraisine();
-						_score = 0;
-						Score.UpdateScore(_score);
-					}
+						PuzzleController.CreateNewPuzzle();
+						PuzzleController.ToggleInput(true);
+					}, 2f);
+				}
+				else
+				{
+					StopDraisine();
+					_score = 0;
+					Score.UpdateScore(_score);
 				}
 			}
 			
@@ -109,6 +114,19 @@ public class GameController : MonoBehaviour
 					}, 2f);
 				}
 			}
+		}
+		_modulo = TravelDistance % GateDistanceThreshold;
+	}
+
+	private void OnPuzzleSolved()
+	{
+		float modulo = TravelDistance % GateDistanceThreshold;
+		if (modulo < 10f) return;
+		float distanceToJumpTo = GateDistanceThreshold - 10f;
+		Debug.LogFormat("Puzzle soled at distance {0} % {1} = {2}", TravelDistance, GateDistanceThreshold, modulo);
+		if (modulo < distanceToJumpTo)
+		{
+			TravelDistance = TravelDistance - modulo + distanceToJumpTo;
 		}
 	}
 

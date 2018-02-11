@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using SimpleEasing;
@@ -84,6 +85,8 @@ public class PuzzleController : MonoBehaviour
 //			_transform.position = currentPos;
 		_activeTransform.MoveTo(_activeTransform.position, _other.position, SwapDuration, EasingTypes.BackOut);
 		_other.MoveTo(_other.position, currentPos, SwapDuration, EasingTypes.BackOut);
+		_activeTransform.RotateTo(_activeTransform.transform.rotation, Quaternion.identity, SwapDuration, EasingTypes.Linear);
+		_other.RotateTo(_other.transform.rotation, Quaternion.identity, SwapDuration, EasingTypes.Linear);
 		_swapping = true;
 
 		SwapAudioSource.clip = _soundToggle ? SwapSound1 : SwapSound2;
@@ -96,7 +99,7 @@ public class PuzzleController : MonoBehaviour
 		
 		ValidatePuzzle();
 		
-		if (!_selection)
+		if (!_selection || !_inputEnabled)
 		{
 			Blocks.ForEach(b => b.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic);
 			_swapping = false;
@@ -113,6 +116,7 @@ public class PuzzleController : MonoBehaviour
 		{
 			Blocks[i].transform.SetSiblingIndex(i);
 			Blocks[i].GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+			Blocks[i].GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 			var blockBounds = Blocks[i].GetComponent<Collider2D>().bounds;
 			float y = SpreadHeight + yPos + blockBounds.extents.y;
 			Blocks[i].transform.MoveTo(Blocks[i].transform.position, new Vector3(Blocks[i].transform.position.x, y),
@@ -190,8 +194,13 @@ public class PuzzleController : MonoBehaviour
 
 	public void JumpBlocks()
 	{
-		if (!_swapping)
+		_inputEnabled = false;
+		_selection = false;
+		DelayedCall(() =>
+		{
 			Blocks.ForEach(b => b.GetComponent<Rigidbody2D>().AddForce(Vector3.up * 10f, ForceMode2D.Impulse));
+			DelayedCall(() => { _inputEnabled = true; }, 1f);
+		}, 1f);
 	}
 
 	public void CreateNewPuzzle()
@@ -209,6 +218,12 @@ public class PuzzleController : MonoBehaviour
 			.Select(b => b.CurrentSprite)
 			.ToList();
 		var solved = ConditionController.CheckSolution(blockSprites);
+		
+#if UNITY_EDITOR
+		if (Input.GetKey(KeyCode.Y))
+			solved = true;
+#endif
+		
 //		Debug.LogFormat("Puzzle solved? {0}", solved);
 		
 		if (solved) ToggleInput(false);
@@ -218,5 +233,20 @@ public class PuzzleController : MonoBehaviour
 	public void ToggleInput(bool enabled)
 	{
 		_inputEnabled = enabled;
+		if (!_inputEnabled)
+		{
+			Blocks.ForEach(b => b.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic);
+		}
+	}
+	
+	private void DelayedCall(Action action, float delay)
+	{
+		StartCoroutine(DelayedCallRoutine(action, delay));
+	}
+
+	private IEnumerator DelayedCallRoutine(Action action, float delay)
+	{
+		yield return new WaitForSeconds(delay);
+		action();
 	}
 }

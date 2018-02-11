@@ -1,10 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Security.Policy;
 using UnityEngine;
 
 public class Gate : MonoBehaviour
 {
+	public Action GatePassed;
+	
 	public Parallax ParallaxToFollow;
 	public float XPositionOnAppear;
 	public GameObject GreenSprite;
@@ -62,6 +65,8 @@ public class Gate : MonoBehaviour
 		{
 			_audioSource.Play();
 			GreenGateAnimator.SetTrigger("Pass");
+			if (GatePassed != null)
+				GatePassed();
 		}
 	}
 }

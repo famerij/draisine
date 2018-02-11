@@ -270,7 +270,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1410282613671696}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -3.67, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4572191924790264}
@@ -567,7 +567,7 @@ MonoBehaviour:
   YMax: 0
   SpacingMin: 0
   SpacingMax: 0
-  MaxGraphicInstances: 100
+  MaxGraphicInstances: 400
   DestroyGraphicsDistance: 20
 --- !u!212 &212013334741710152
 SpriteRenderer:
