@@ -511,7 +511,7 @@ MonoBehaviour:
   YMax: 0.5
   SpacingMin: 0
   SpacingMax: 0
-  MaxGraphicInstances: 30
+  MaxGraphicInstances: 60
   DestroyGraphicsDistance: 20
 --- !u!114 &114455753330718166
 MonoBehaviour:
@@ -567,7 +567,7 @@ MonoBehaviour:
   YMax: 0
   SpacingMin: 0
   SpacingMax: 0
-  MaxGraphicInstances: 400
+  MaxGraphicInstances: 50
   DestroyGraphicsDistance: 20
 --- !u!212 &212013334741710152
 SpriteRenderer:
@@ -867,7 +867,7 @@ SpriteRenderer:
   m_SortingLayerID: -792218525
   m_SortingLayer: -1
   m_SortingOrder: 8
-  m_Sprite: {fileID: 21300000, guid: b847dc10fe5404c6b87c6f4d186418d2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: cc874cfc9b12d4181804815958babdc2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
