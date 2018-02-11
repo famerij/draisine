@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 
 public class PuzzleConditionController : MonoBehaviour
 {
+	public PuzzleController PuzzleController;
 	public List<Sprite> Sprites;
 	public GameObject ConditionSpriteParent;
 	public GameObject SolvedUI;
@@ -17,10 +18,12 @@ public class PuzzleConditionController : MonoBehaviour
 	[SerializeField]
 	private List<ConditionSprite> _conditionSprites;
 
+	private AudioSource _audioSource;
 	private bool _solved;
 
 	private void Awake()
 	{
+		_audioSource = GetComponent<AudioSource>();
 		_conditionSprites = ConditionSpriteParent.GetComponentsInChildren<ConditionSprite>().ToList();
 		_conditionSprites.Reverse();
 	}
@@ -60,25 +63,36 @@ public class PuzzleConditionController : MonoBehaviour
 			UpdateUI();
 
 			_solved = false;
+
+			PuzzleController.ValidatePuzzle();
 		}));
 	}
 
 	private IEnumerator ScrambleAnimation(Action onDone)
 	{
 		float timer = 0f;
+		int frameCount = 0;
 
 		while (timer < 1f)
 		{
 			timer += Time.deltaTime;
+			frameCount++;
 			for (int i = 0; i < _conditionSprites.Count; i++)
 			{
-				_conditionSprites[i].ValidationImage.color = Color.red;
+				int rand = Random.Range(0, 2);
+				Color randomColor = rand == 0 ? Color.green : Color.red;
+				if (frameCount % 6 == 0)
+				{
+					_conditionSprites[i].ValidationImage.color =  randomColor;
+				}
 				_conditionSprites[i].SymbolImage.sprite = Sprites[Random.Range(0, Sprites.Count)];
 			}
 			
+			_audioSource.pitch = Random.Range(0.9f, 1.1f);
+			_audioSource.PlayOneShot(_audioSource.clip);
+			
 			yield return new WaitForEndOfFrame();
 		}
-		
 		
 		onDone();
 	}
